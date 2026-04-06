@@ -5,6 +5,7 @@ import GrahaPage from './pages/GrahaPage';
 import PanchangPage from './pages/PanchangPage';
 import MediniPage from './pages/MediniPage';
 import EclipsePage from './pages/EclipsePage';
+import KundliPage from './pages/KundliPage';
 
 const API_BASE = import.meta.env.VITE_API_BASE || '';
 
@@ -45,7 +46,6 @@ export default function App() {
     setLoading(false);
   }, []);
 
-  // Record hit with timezone on first load
   useEffect(() => {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
     fetch(`${API_BASE}/api/v1/counter/hit?tz=${encodeURIComponent(tz)}`, { method: 'POST' })
@@ -121,7 +121,9 @@ export default function App() {
 
         <Nav active={active} setActive={setActive} />
 
-        {loading ? (
+        {active === 'kundli' ? (
+          <KundliPage />
+        ) : loading ? (
           <LoadingSkeleton />
         ) : (
           <>
@@ -134,7 +136,6 @@ export default function App() {
 
         <Divider />
 
-        {/* ═══ FOOTER WITH COUNTER ═══ */}
         <footer style={{ textAlign: 'center', padding: '20px 0 8px' }}>
           <div style={{ fontFamily: 'var(--font-sanskrit)', fontSize: 16, color: 'var(--ochre)', marginBottom: 14 }}>ॐ गुरवे नमः</div>
 
@@ -143,45 +144,27 @@ export default function App() {
               display: 'inline-block', padding: '14px 28px', marginBottom: 16,
               border: '1px solid rgba(92,64,51,0.12)', background: 'rgba(245,230,200,0.4)',
             }}>
-              {/* Counts row */}
               <div style={{ display: 'flex', gap: 24, justifyContent: 'center', marginBottom: 12 }}>
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontFamily: 'var(--font-devanagari)', fontSize: 10, color: 'var(--ochre)', letterSpacing: 1, marginBottom: 2 }}>
-                    आज के दर्शक
-                  </div>
-                  <div style={{ fontFamily: 'var(--font-body)', fontSize: 20, color: 'var(--ink)', fontWeight: 600 }}>
-                    {hitCounts.today?.toLocaleString()}
-                  </div>
-                  <div style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--burnt-sienna)', letterSpacing: 1, textTransform: 'uppercase' }}>
-                    Today
-                  </div>
+                  <div style={{ fontFamily: 'var(--font-devanagari)', fontSize: 10, color: 'var(--ochre)', letterSpacing: 1, marginBottom: 2 }}>आज के दर्शक</div>
+                  <div style={{ fontFamily: 'var(--font-body)', fontSize: 20, color: 'var(--ink)', fontWeight: 600 }}>{hitCounts.today?.toLocaleString()}</div>
+                  <div style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--burnt-sienna)', letterSpacing: 1, textTransform: 'uppercase' }}>Today</div>
                 </div>
                 <div style={{ width: 1, background: 'rgba(92,64,51,0.15)' }} />
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontFamily: 'var(--font-devanagari)', fontSize: 10, color: 'var(--ochre)', letterSpacing: 1, marginBottom: 2 }}>
-                    कुल दर्शक
-                  </div>
-                  <div style={{ fontFamily: 'var(--font-body)', fontSize: 20, color: 'var(--ink)', fontWeight: 600 }}>
-                    {hitCounts.total?.toLocaleString()}
-                  </div>
-                  <div style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--burnt-sienna)', letterSpacing: 1, textTransform: 'uppercase' }}>
-                    Total
-                  </div>
+                  <div style={{ fontFamily: 'var(--font-devanagari)', fontSize: 10, color: 'var(--ochre)', letterSpacing: 1, marginBottom: 2 }}>कुल दर्शक</div>
+                  <div style={{ fontFamily: 'var(--font-body)', fontSize: 20, color: 'var(--ink)', fontWeight: 600 }}>{hitCounts.total?.toLocaleString()}</div>
+                  <div style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--burnt-sienna)', letterSpacing: 1, textTransform: 'uppercase' }}>Total</div>
                 </div>
               </div>
-
-              {/* Top countries */}
               {hitCounts.top_countries?.length > 0 && (
                 <div style={{ borderTop: '1px solid rgba(92,64,51,0.1)', paddingTop: 10 }}>
-                  <div style={{ fontFamily: 'var(--font-devanagari)', fontSize: 10, color: 'var(--ochre)', letterSpacing: 1, marginBottom: 6 }}>
-                    विश्व से दर्शक
-                  </div>
+                  <div style={{ fontFamily: 'var(--font-devanagari)', fontSize: 10, color: 'var(--ochre)', letterSpacing: 1, marginBottom: 6 }}>विश्व से दर्शक</div>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, justifyContent: 'center' }}>
                     {hitCounts.top_countries.slice(0, 8).map(c => (
                       <span key={c.country} style={{
                         fontFamily: 'var(--font-body)', fontSize: 10, color: 'var(--burnt-sienna)',
-                        padding: '2px 8px', background: 'rgba(184,134,11,0.06)',
-                        border: '1px solid rgba(184,134,11,0.1)',
+                        padding: '2px 8px', background: 'rgba(184,134,11,0.06)', border: '1px solid rgba(184,134,11,0.1)',
                       }}>
                         {c.country} <strong style={{ color: 'var(--ink)' }}>{c.count}</strong>
                       </span>
