@@ -51,10 +51,11 @@ export function SeverityBadge({ severity, sa }) {
 }
 
 const NAV_TABS = [
-  { key: 'graha',    sa: 'ग्रह गोचर',  en: 'Graha' },
-  { key: 'panchang', sa: 'पञ्चाङ्ग',   en: 'Panchang' },
-  { key: 'medini',   sa: 'मेदिनी फल',  en: 'Predictions' },
-  { key: 'eclipse',  sa: 'ग्रहण फल',   en: 'Eclipses' },
+  { key: 'graha',    sa: 'ग्रह गोचर',    en: 'Graha' },
+  { key: 'panchang', sa: 'पञ्चाङ्ग',     en: 'Panchang' },
+  { key: 'medini',   sa: 'मेदिनी फल',    en: 'Predictions' },
+  { key: 'eclipse',  sa: 'ग्रहण फल',     en: 'Eclipses' },
+  { key: 'kundli',   sa: 'जन्म कुण्डली', en: 'Kundli' },
 ];
 
 export function Nav({ active, setActive }) {
@@ -71,8 +72,8 @@ export function Nav({ active, setActive }) {
           style={{
             background: active === t.key ? 'var(--burnt-sienna)' : 'transparent',
             color: active === t.key ? 'var(--parchment-light)' : 'var(--burnt-sienna)',
-            border: 'none', padding: '12px 24px', cursor: 'pointer',
-            fontFamily: 'var(--font-devanagari)', fontSize: 14,
+            border: 'none', padding: '12px 20px', cursor: 'pointer',
+            fontFamily: 'var(--font-devanagari)', fontSize: 13,
             letterSpacing: 1, transition: 'all 0.3s ease',
             borderTop: active === t.key ? '2px solid var(--ochre)' : '2px solid transparent',
           }}
@@ -80,7 +81,7 @@ export function Nav({ active, setActive }) {
           {t.sa}
           <span style={{
             display: 'block', fontFamily: 'var(--font-body)',
-            fontSize: 10, letterSpacing: 2, textTransform: 'uppercase',
+            fontSize: 9, letterSpacing: 2, textTransform: 'uppercase',
             marginTop: 2, opacity: 0.7,
           }}>{t.en}</span>
         </button>
