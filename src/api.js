@@ -1,10 +1,3 @@
-/* ═══════════════════════════════════════════════
-   API Configuration
-   Change API_BASE for production deployment.
-   ═══════════════════════════════════════════════ */
-
-// In development (Vite proxy handles /api → localhost:8000)
-// In production, set this to your backend URL
 const API_BASE = import.meta.env.VITE_API_BASE || '';
 
 export async function fetchAPI(endpoint) {
@@ -25,4 +18,8 @@ export function getPanchang(lat = 28.6139, lon = 77.209) {
 export function getMediniPredictions(category = null) {
   const q = category ? `?category=${category}` : '';
   return fetchAPI(`/api/v1/medini/predictions${q}`);
+}
+
+export function getEclipseAnalysis(count = 6) {
+  return fetchAPI(`/api/v1/eclipses/upcoming?count=${count}`);
 }
