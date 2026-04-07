@@ -55,6 +55,7 @@ export default function App() {
       <div style={{ maxWidth: 820, margin: '0 auto', padding: '24px 20px 60px', position: 'relative', zIndex: 2 }}>
         <header style={{ textAlign: 'center', marginBottom: 12, padding: '28px 0 20px', animation: 'fadeIn 1s ease' }}>
           <div style={{ fontSize: 11, color: 'var(--ochre)', letterSpacing: 6, textTransform: 'uppercase', marginBottom: 14, fontFamily: 'var(--font-body)' }}>Based on Varahamihira's Brihat Samhita</div>
+          <img src="/logo.svg" alt="Medini Jyotish" style={{ width: 80, height: 80, margin: "0 auto 12px", display: "block", opacity: 0.9 }} />
           <h1 style={{ fontFamily: 'var(--font-sanskrit)', fontSize: 'clamp(32px, 6vw, 48px)', fontWeight: 400, color: 'var(--ink)', margin: '0 0 4px', letterSpacing: 4, lineHeight: 1.2 }}>मेदिनी ज्योतिष</h1>
           <div style={{ fontFamily: 'var(--font-body)', fontSize: 16, color: 'var(--burnt-sienna)', letterSpacing: 6, textTransform: 'uppercase' }}>Medini Jyotish</div>
           <div style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'var(--ochre)', marginTop: 14, letterSpacing: 1 }}>
