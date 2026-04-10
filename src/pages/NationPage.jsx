@@ -285,6 +285,18 @@ export default function NationPage() {
                 </>
               )}
 
+              {/* ── Weekly Transit (Moon) ── */}
+              {kundli.current_analysis.weekly_transit && (
+                <>
+                  <div style={{ textAlign: 'center', margin: '24px 0 14px' }}>
+                    <div style={{ fontFamily: 'var(--font-devanagari)', fontSize: 18, color: 'var(--ink)' }}>साप्ताहिक चन्द्र गोचर</div>
+                    <div style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'var(--burnt-sienna)', letterSpacing: 2, textTransform: 'uppercase' }}>This Week's Moon Transit over {kundli.nation?.name || 'Nation'}'s Chart</div>
+                    <div style={{ fontSize: 10, color: 'var(--ochre)', marginTop: 4, fontStyle: 'italic' }}>Moon changes sign every ~2.5 days — this reading shifts quickly</div>
+                  </div>
+                  <TransitCard t={kundli.current_analysis.weekly_transit} />
+                </>
+              )}
+
               {/* Key themes */}
               {kundli.current_analysis.key_themes?.length > 0 && (
                 <>
