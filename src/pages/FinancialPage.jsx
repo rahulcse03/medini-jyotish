@@ -133,6 +133,21 @@ function CommodityCard({ commodity, index }) {
         Primary: {commodity.primary_graha_sa} in {commodity.primary_rashi_sa} ({commodity.primary_dignity_sa})
       </div>
 
+      {/* Validity period */}
+      {commodity.validity && (
+        <div style={{
+          fontFamily: 'var(--font-body)', fontSize: 11, color: 'var(--burnt-sienna)',
+          background: 'rgba(184,134,11,0.06)', padding: '4px 10px', marginBottom: 8,
+          display: 'inline-flex', alignItems: 'center', gap: 6,
+        }}>
+          <span style={{ fontFamily: 'var(--font-sanskrit)' }}>⏳</span>
+          <span>{commodity.validity.label_sa}</span>
+          <span style={{ color: 'var(--ochre)' }}>·</span>
+          <span>{commodity.validity.label}</span>
+          <span style={{ color: 'var(--ochre)' }}>({commodity.validity.duration})</span>
+        </div>
+      )}
+
       {/* Factors */}
       {commodity.factors?.length > 0 && (
         <ul style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--ink)', lineHeight: 1.8, margin: '8px 0 0', paddingLeft: 18 }}>
@@ -214,6 +229,8 @@ export default function FinancialPage() {
   const nextConj = cycle.next_conjunction;
   const nextOpp = cycle.next_opposition;
 
+  const graha_summary = data.graha_summary || [];
+
   return (
     <div style={{ animation: 'fadeIn 0.5s ease' }}>
       <SectionHeader
@@ -262,6 +279,50 @@ export default function FinancialPage() {
       {/* Commodity Outlook */}
       <SectionHeader sa="वस्तु दृष्टि" en="Commodity Outlook" sub="Based on planetary significations from Brihat Samhita" />
       {commodities.map((c, i) => <CommodityCard key={c.key} commodity={c} index={i} />)}
+
+      <Divider />
+
+      {/* Transit Validity Timeline */}
+      <SectionHeader sa="ग्रह गोचर काल" en="Transit Validity Timeline" sub="When each planet changes sign — and how long current readings hold" />
+      <div style={{ overflowX: 'auto' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'var(--font-body)', fontSize: 13 }}>
+          <thead>
+            <tr style={{ borderBottom: '2px solid var(--burnt-sienna)', textAlign: 'left' }}>
+              <th style={{ padding: '10px 8px', color: 'var(--ochre)', fontSize: 11, letterSpacing: 1 }}>GRAHA</th>
+              <th style={{ padding: '10px 8px', color: 'var(--ochre)', fontSize: 11 }}>CURRENT RASHI</th>
+              <th style={{ padding: '10px 8px', color: 'var(--ochre)', fontSize: 11 }}>NEXT CHANGE</th>
+              <th style={{ padding: '10px 8px', color: 'var(--ochre)', fontSize: 11 }}>VALID FOR</th>
+            </tr>
+          </thead>
+          <tbody>
+            {graha_summary.map((g, i) => (
+              <tr key={i} style={{ borderBottom: '1px solid rgba(92,64,51,0.08)' }}>
+                <td style={{ padding: '10px 8px', fontFamily: 'var(--font-sanskrit)', fontWeight: 600, color: 'var(--ink)' }}>
+                  {g.graha_sa} {g.is_retrograde ? '↺' : ''}
+                </td>
+                <td style={{ padding: '10px 8px', color: 'var(--ink)' }}>
+                  {g.rashi_sa} ({g.rashi})
+                </td>
+                <td style={{ padding: '10px 8px', color: 'var(--burnt-sienna)', fontSize: 12 }}>
+                  {g.next_sign_change || '—'}
+                </td>
+                <td style={{ padding: '10px 8px' }}>
+                  {g.validity_label ? (
+                    <span style={{
+                      fontSize: 11, padding: '2px 8px',
+                      background: g.days_in_sign < 30 ? 'rgba(139,37,0,0.08)' : g.days_in_sign < 180 ? 'rgba(154,114,9,0.08)' : 'rgba(45,107,63,0.08)',
+                      color: g.days_in_sign < 30 ? '#8B2500' : g.days_in_sign < 180 ? '#9A7209' : '#2D6B3F',
+                      border: `1px solid ${g.days_in_sign < 30 ? 'rgba(139,37,0,0.2)' : g.days_in_sign < 180 ? 'rgba(154,114,9,0.2)' : 'rgba(45,107,63,0.2)'}`,
+                    }}>
+                      {g.validity_label}
+                    </span>
+                  ) : '—'}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <Divider />
 
