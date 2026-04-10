@@ -9,6 +9,7 @@ import SamvatsaraPage from './pages/SamvatsaraPage';
 import KundliPage from './pages/KundliPage';
 import NationPage from './pages/NationPage';
 import MonthlyPage from './pages/MonthlyPage';
+import FinancialPage from './pages/FinancialPage';
 
 const API_BASE = import.meta.env.VITE_API_BASE || '';
 
@@ -82,6 +83,8 @@ export default function App() {
           <NationPage />
         ) : active === 'monthly' ? (
           <MonthlyPage />
+        ) : active === 'financial' ? (
+          <FinancialPage />
         ) : loading ? (
           <LoadingSkeleton />
         ) : (

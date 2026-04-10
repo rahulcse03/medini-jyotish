@@ -40,3 +40,7 @@ export function getNationKundli(key) {
 export function getMonthlySummary(year, month) {
   return fetchAPI(`/api/v1/medini/monthly/${year}/${month}`);
 }
+
+export function getFinancialAnalysis() {
+  return fetchAPI('/api/v1/medini/financial');
+}
