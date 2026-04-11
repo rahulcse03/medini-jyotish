@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { SectionHeader, Divider, SeverityBadge } from '../components/Shared';
 import { useLang } from '../i18n/LanguageContext';
 import { GRAHA_INFO, findGrahaKey, DIGNITY_COLORS, SEVERITY_STYLES } from '../data/constants';
+import LocationPicker from '../components/LocationPicker';
 
 const API_BASE = import.meta.env.VITE_API_BASE || '';
 
@@ -14,6 +15,7 @@ function KundliForm({ onGenerate, loading }) {
   const [lon, setLon] = useState('77.2090');
   const [tz, setTz] = useState('5.5');
   const [name, setName] = useState('');
+  const [showManual, setShowManual] = useState(false);
 
   const commonPlaces = [
     { label: 'Delhi', lat: 28.6139, lon: 77.2090, tz: 5.5 },
@@ -31,6 +33,7 @@ function KundliForm({ onGenerate, loading }) {
   ];
 
   const selectPlace = (p) => { setPlace(p.label); setLat(String(p.lat)); setLon(String(p.lon)); setTz(String(p.tz)); };
+  const handleLocationPick = (loc) => { setLat(String(loc.lat.toFixed(4))); setLon(String(loc.lon.toFixed(4))); setTz(String(loc.tz)); if (loc.place) setPlace(loc.place); };
   const handleSubmit = () => { if (date && time) onGenerate({ date, time, lat: parseFloat(lat), lon: parseFloat(lon), tz: parseFloat(tz), name, place }); };
 
   const inputStyle = { fontFamily: 'var(--font-body)', fontSize: 14, padding: '10px 14px', border: '1px solid rgba(92,64,51,0.25)', background: 'rgba(245,230,200,0.5)', color: 'var(--ink)', width: '100%', outline: 'none' };
@@ -46,11 +49,9 @@ function KundliForm({ onGenerate, loading }) {
         <div><label style={labelStyle}>{t('kundli.date')}</label><input style={inputStyle} type="date" value={date} onChange={e => setDate(e.target.value)} /></div>
         <div><label style={labelStyle}>{t('kundli.time')}</label><input style={inputStyle} type="time" value={time} onChange={e => setTime(e.target.value)} /></div>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 16 }}>
-        <div><label style={labelStyle}>{t('kundli.lat')}</label><input style={inputStyle} type="number" step="0.0001" value={lat} onChange={e => setLat(e.target.value)} /></div>
-        <div><label style={labelStyle}>{t('kundli.lon')}</label><input style={inputStyle} type="number" step="0.0001" value={lon} onChange={e => setLon(e.target.value)} /></div>
-        <div><label style={labelStyle}>{t('kundli.tz')}</label><input style={inputStyle} type="number" step="0.5" value={tz} onChange={e => setTz(e.target.value)} /></div>
-      </div>
+      {/* Location Picker — Search + Map */}
+      <LocationPicker lat={lat} lon={lon} onLocationSelect={handleLocationPick} />
+
       <div style={{ marginBottom: 16 }}>
         <label style={labelStyle}>{t('kundli.quickSelect')}</label>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
@@ -59,6 +60,30 @@ function KundliForm({ onGenerate, loading }) {
           ))}
         </div>
       </div>
+
+      {/* Coordinates display */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12, flexWrap: 'wrap' }}>
+        <div style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'var(--ochre)', flex: 1 }}>
+          📍 {place || 'Delhi'} — {parseFloat(lat).toFixed(4)}°N, {parseFloat(lon).toFixed(4)}°E · UTC{parseFloat(tz) >= 0 ? '+' : ''}{tz}
+        </div>
+        <button onClick={() => setShowManual(!showManual)} style={{
+          fontFamily: 'var(--font-body)', fontSize: 10, color: 'var(--burnt-sienna)',
+          background: 'none', border: '1px solid rgba(92,64,51,0.15)',
+          padding: '3px 10px', cursor: 'pointer',
+        }}>
+          {showManual ? 'Hide Manual' : 'Edit Manually'}
+        </button>
+      </div>
+
+      {/* Manual lat/lon/tz override */}
+      {showManual && (
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 16, animation: 'fadeSlideIn 0.3s ease' }}>
+          <div><label style={labelStyle}>{t('kundli.lat')}</label><input style={inputStyle} type="number" step="0.0001" value={lat} onChange={e => setLat(e.target.value)} /></div>
+          <div><label style={labelStyle}>{t('kundli.lon')}</label><input style={inputStyle} type="number" step="0.0001" value={lon} onChange={e => setLon(e.target.value)} /></div>
+          <div><label style={labelStyle}>{t('kundli.tz')}</label><input style={inputStyle} type="number" step="0.5" value={tz} onChange={e => setTz(e.target.value)} /></div>
+        </div>
+      )}
+
       <button onClick={handleSubmit} disabled={!date || !time || loading} style={{ width: '100%', padding: '14px', fontFamily: 'var(--font-devanagari)', fontSize: 16, background: 'var(--burnt-sienna)', color: 'var(--parchment-light)', border: 'none', cursor: date && time ? 'pointer' : 'not-allowed', letterSpacing: 2, opacity: date && time ? 1 : 0.5 }}>
         {loading ? 'गणना हो रही है...' : `कुण्डली बनाएं — ${t('kundli.generate')}`}
       </button>
