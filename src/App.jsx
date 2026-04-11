@@ -86,6 +86,11 @@ export default function App() {
           </button>
         </div>
 
+        {/* Top-right Language selector */}
+        <div style={{ position: 'absolute', top: 26, right: 20, zIndex: 10 }}>
+          <LanguageSelector />
+        </div>
+
         <header style={{ textAlign: 'center', marginBottom: 12, padding: '28px 0 20px', animation: 'fadeIn 1s ease' }}>
           <div style={{ fontSize: 11, color: 'var(--ochre)', letterSpacing: 6, textTransform: 'uppercase', marginBottom: 14, fontFamily: 'var(--font-body)' }}>{t('app.tagline')}</div>
           <img src="/logo.svg" alt="Medini Jyotish" style={{ width: 80, height: 80, margin: "0 auto 12px", display: "block", opacity: 0.9 }} />
@@ -96,7 +101,6 @@ export default function App() {
           </div>
         </header>
 
-        <LanguageSelector />
         <Divider />
 
         {error && (

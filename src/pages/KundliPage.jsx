@@ -127,7 +127,7 @@ function RashiChart({ houses, lagna, title, titleSa }) {
   );
 }
 
-function InterpretationSection({ interpretation }) {
+function InterpretationSection({ interpretation, pdfMode }) {
   const { t } = useLang();
   if (!interpretation) return null;
   const interp = interpretation;
@@ -203,7 +203,7 @@ function InterpretationSection({ interpretation }) {
       )}
 
       {/* Planet Readings — collapsible */}
-      <PlanetReadings readings={interp.planet_readings} />
+      <PlanetReadings readings={interp.planet_readings} pdfMode={pdfMode} />
 
       {/* Current Dasha */}
       {interp.current_dasha?.meaning && (
@@ -230,17 +230,17 @@ function InterpretationSection({ interpretation }) {
       )}
 
       {/* Ask the Sage — Premium Placeholder */}
-      <AskTheSage />
+      {!pdfMode && <AskTheSage />}
     </div>
   );
 }
 
-function PlanetReadings({ readings }) {
+function PlanetReadings({ readings, pdfMode }) {
   const { t } = useLang();
   const [expanded, setExpanded] = useState(false);
   if (!readings?.length) return null;
 
-  const shown = expanded ? readings : readings.slice(0, 3);
+  const shown = (expanded || pdfMode) ? readings : readings.slice(0, 3);
 
   return (
     <div style={{ marginBottom: 24 }}>
@@ -287,11 +287,11 @@ const STRENGTH_STYLE = {
   caution:  { bg: 'rgba(139,37,0,0.08)', color: 'var(--blood)', border: 'var(--blood)', label: 'सावधान · Caution' },
 };
 
-function YogaSection({ yogas }) {
+function YogaSection({ yogas, pdfMode }) {
   const [expanded, setExpanded] = useState(false);
   if (!yogas?.length) return null;
 
-  const shown = expanded ? yogas : yogas.slice(0, 4);
+  const shown = (expanded || pdfMode) ? yogas : yogas.slice(0, 4);
 
   return (
     <div style={{ marginBottom: 24, animation: 'fadeSlideIn 0.5s ease 0.3s both' }}>
@@ -364,12 +364,12 @@ function YogaSection({ yogas }) {
    DRISHTI SECTION — ग्रह दृष्टि (Planetary Aspects)
    ═══════════════════════════════════════════════ */
 
-function DrishtiSection({ drishti, grahas }) {
+function DrishtiSection({ drishti, grahas, pdfMode }) {
   const [expanded, setExpanded] = useState(false);
   if (!drishti?.aspects?.length) return null;
 
   const aspects = drishti.aspects;
-  const shown = expanded ? aspects : aspects.slice(0, 6);
+  const shown = (expanded || pdfMode) ? aspects : aspects.slice(0, 6);
 
   return (
     <div style={{ marginBottom: 24, animation: 'fadeSlideIn 0.5s ease 0.4s both' }}>
@@ -478,6 +478,7 @@ export default function KundliPage() {
   const { t } = useLang();
   const [kundli, setKundli] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [pdfMode, setPdfMode] = useState(false);
   const [error, setError] = useState(null);
   const [pdfLoading, setPdfLoading] = useState(false);
   const kundliRef = useRef(null);
@@ -497,6 +498,11 @@ export default function KundliPage() {
   const handleSavePdf = useCallback(async () => {
     if (!kundliRef.current || pdfLoading) return;
     setPdfLoading(true);
+    setPdfMode(true);
+
+    // Wait for React re-render (expanded sections)
+    await new Promise(r => setTimeout(r, 300));
+
     try {
       const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
         import('html2canvas'),
@@ -507,6 +513,10 @@ export default function KundliPage() {
 
       // Clone offscreen + inline all computed styles (CSS vars → real values)
       const clone = el.cloneNode(true);
+
+      // Remove "Show more" buttons from clone
+      clone.querySelectorAll('button').forEach(btn => btn.remove());
+
       clone.style.position = 'absolute';
       clone.style.left = '-9999px';
       clone.style.top = '0';
@@ -562,6 +572,15 @@ export default function KundliPage() {
       for (let page = 0; page < totalPages; page++) {
         if (page > 0) pdf.addPage();
 
+        // Fill entire page with parchment background
+        pdf.setFillColor(245, 230, 200);
+        pdf.rect(0, 0, pdfW, pdfH, 'F');
+
+        // Subtle border frame
+        pdf.setDrawColor(184, 134, 11);
+        pdf.setLineWidth(0.3);
+        pdf.rect(5, 5, pdfW - 10, pdfH - 10);
+
         const sliceStartMm = page === 0 ? 0 : firstPageH + (page - 1) * laterPageH;
         const sliceHeightMm = page === 0 ? firstPageH : laterPageH;
         const srcY = Math.round(sliceStartMm * pxPerMm * 2);
@@ -581,21 +600,27 @@ export default function KundliPage() {
 
         if (page === 0) {
           pdf.setFillColor(92, 64, 51);
-          pdf.rect(0, 0, pdfW, headerH, 'F');
+          pdf.rect(5, 5, pdfW - 10, headerH, 'F');
           pdf.setTextColor(245, 230, 200);
           pdf.setFontSize(14);
-          pdf.text('Medini Jyotish', pdfW / 2, 10, { align: 'center' });
+          pdf.text('Medini Jyotish', pdfW / 2, 14, { align: 'center' });
           pdf.setFontSize(8);
           pdf.setTextColor(200, 180, 140);
-          pdf.text('medinijyotish.com', pdfW / 2, 15, { align: 'center' });
+          pdf.text('medinijyotish.com', pdfW / 2, 19, { align: 'center' });
         }
 
-        pdf.addImage(sliceImg, 'JPEG', margin, page === 0 ? headerH + 2 : margin, contentW, sliceMmH);
+        pdf.addImage(sliceImg, 'JPEG', margin, page === 0 ? headerH + 6 : margin, contentW, sliceMmH);
 
+        // Page number bottom-right
+        pdf.setFontSize(8);
+        pdf.setTextColor(184, 134, 11);
+        pdf.text(`${page + 1} / ${totalPages}`, pdfW - 12, pdfH - 8, { align: 'right' });
+
+        // Footer on last page
         if (page === totalPages - 1) {
           pdf.setFontSize(7);
           pdf.setTextColor(150, 130, 100);
-          pdf.text('Generated by medinijyotish.com | Based on Brihat Samhita & Parashara Hora Shastra', pdfW / 2, 290, { align: 'center' });
+          pdf.text('Generated by medinijyotish.com | Based on Brihat Samhita & Parashara Hora Shastra', pdfW / 2, pdfH - 8, { align: 'center' });
         }
       }
 
@@ -606,6 +631,7 @@ export default function KundliPage() {
     } catch (e) {
       console.error('PDF generation failed:', e);
     }
+    setPdfMode(false);
     setPdfLoading(false);
   }, [kundli, pdfLoading]);
 
@@ -655,15 +681,15 @@ export default function KundliPage() {
           <Divider />
 
           {/* Interpretation */}
-          <InterpretationSection interpretation={kundli.interpretation} />
+          <InterpretationSection interpretation={kundli.interpretation} pdfMode={pdfMode} />
 
           <Divider />
 
           {/* Yogas — Classical Combinations */}
-          <YogaSection yogas={kundli.yogas} />
+          <YogaSection yogas={kundli.yogas} pdfMode={pdfMode} />
 
           {/* Drishti — Planetary Aspects */}
-          <DrishtiSection drishti={kundli.drishti} grahas={kundli.grahas} />
+          <DrishtiSection drishti={kundli.drishti} grahas={kundli.grahas} pdfMode={pdfMode} />
 
           <Divider />
 
