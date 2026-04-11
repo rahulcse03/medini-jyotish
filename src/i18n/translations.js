@@ -8,7 +8,7 @@
 
 const en = {
   // ── App / Header / Footer ──
-  'app.tagline': 'Based on Varahamihira\'s Brihat Samhita',
+  'app.tagline': 'Based on Brihat Samhita & Parashara Hora Shastra',
   'app.nameEn': 'Medini Jyotish',
   'app.error': 'Unable to connect to the Jyotish engine.',
   'app.retry': 'Retry',
@@ -17,7 +17,7 @@ const en = {
   'app.whatsapp': 'WhatsApp',
   'app.post': 'Post',
   'app.share': 'Share',
-  'app.shareText': 'मेदिनी ज्योतिष — Vedic Astrology Engine based on Brihat Samhita',
+  'app.shareText': 'मेदिनी ज्योतिष — Vedic Astrology Engine based on Brihat Samhita & Parashara Hora Shastra',
   'app.disclaimer1': 'Based on classical texts of Vedic Jyotish for educational purposes.',
   'app.disclaimer2': 'Not financial, medical, or professional advice.',
   'app.disclaimer3': 'Planetary positions calculated using Swiss Ephemeris (accuracy < 0.001 arc-seconds).',

@@ -248,6 +248,169 @@ function PlanetReadings({ readings }) {
   );
 }
 
+/* ═══════════════════════════════════════════════
+   YOGA SECTION — योग विश्लेषण
+   ═══════════════════════════════════════════════ */
+
+const STRENGTH_STYLE = {
+  powerful: { bg: 'rgba(184,134,11,0.12)', color: 'var(--ochre)', border: 'var(--ochre)', label: 'प्रबल · Powerful' },
+  strong:   { bg: 'rgba(74,103,65,0.10)', color: 'var(--sage)', border: 'var(--sage)', label: 'दृढ · Strong' },
+  moderate: { bg: 'rgba(92,64,51,0.08)', color: 'var(--burnt-sienna)', border: 'var(--burnt-sienna)', label: 'मध्यम · Moderate' },
+  weak:     { bg: 'rgba(92,64,51,0.06)', color: 'var(--burnt-sienna)', border: 'var(--burnt-sienna)', label: 'दुर्बल · Weak' },
+  caution:  { bg: 'rgba(139,37,0,0.08)', color: 'var(--blood)', border: 'var(--blood)', label: 'सावधान · Caution' },
+};
+
+function YogaSection({ yogas }) {
+  const [expanded, setExpanded] = useState(false);
+  if (!yogas?.length) return null;
+
+  const shown = expanded ? yogas : yogas.slice(0, 4);
+
+  return (
+    <div style={{ marginBottom: 24, animation: 'fadeSlideIn 0.5s ease 0.3s both' }}>
+      <div style={{ textAlign: 'center', marginBottom: 12 }}>
+        <span style={{ fontFamily: 'var(--font-devanagari)', fontSize: 16, color: 'var(--ink)' }}>योग विश्लेषण</span>
+        <span style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--burnt-sienna)', marginLeft: 8 }}>Classical Yogas Detected</span>
+      </div>
+
+      <div style={{ textAlign: 'center', marginBottom: 12 }}>
+        <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'var(--ochre)', letterSpacing: 1 }}>
+          {yogas.length} yoga{yogas.length !== 1 ? 's' : ''} found · पराशर होरा शास्त्र
+        </span>
+      </div>
+
+      {shown.map((y, i) => {
+        const st = STRENGTH_STYLE[y.strength] || STRENGTH_STYLE.moderate;
+        return (
+          <div key={i} style={{
+            background: 'rgba(245,230,200,0.3)', border: '1px solid rgba(92,64,51,0.15)',
+            borderLeft: `3px solid ${st.border}`, padding: '14px 20px', marginBottom: 8,
+          }}>
+            {/* Header: name + strength badge */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6, flexWrap: 'wrap', gap: 6 }}>
+              <div>
+                <span style={{ fontFamily: 'var(--font-devanagari)', fontSize: 16, color: 'var(--ink)' }}>{y.name_sa}</span>
+                <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--burnt-sienna)', marginLeft: 8 }}>{y.name}</span>
+              </div>
+              <span style={{
+                fontFamily: 'var(--font-body)', fontSize: 10, padding: '2px 10px',
+                background: st.bg, color: st.color, border: `1px solid ${st.border}`,
+                whiteSpace: 'nowrap',
+              }}>
+                {st.label}
+              </span>
+            </div>
+
+            {/* Category + grahas */}
+            <div style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'var(--ochre)', marginBottom: 6 }}>
+              {y.category_sa} · {y.category} · {y.graha_sa}
+            </div>
+
+            {/* Description */}
+            <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--ink)', lineHeight: 1.7 }}>
+              {y.description}
+            </div>
+
+            {/* Source */}
+            <div style={{ fontFamily: 'var(--font-body)', fontSize: 10, color: 'var(--ochre)', marginTop: 6, fontStyle: 'italic' }}>
+              📜 {y.source}
+            </div>
+          </div>
+        );
+      })}
+
+      {yogas.length > 4 && (
+        <button onClick={() => setExpanded(!expanded)} style={{
+          display: 'block', margin: '8px auto', fontFamily: 'var(--font-body)', fontSize: 12,
+          color: 'var(--ochre)', background: 'none', border: '1px solid var(--ochre)',
+          padding: '6px 20px', cursor: 'pointer',
+        }}>
+          {expanded ? 'Show fewer yogas' : `Show all ${yogas.length} yogas`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+
+/* ═══════════════════════════════════════════════
+   DRISHTI SECTION — ग्रह दृष्टि (Planetary Aspects)
+   ═══════════════════════════════════════════════ */
+
+function DrishtiSection({ drishti, grahas }) {
+  const [expanded, setExpanded] = useState(false);
+  if (!drishti?.aspects?.length) return null;
+
+  const aspects = drishti.aspects;
+  const shown = expanded ? aspects : aspects.slice(0, 6);
+
+  return (
+    <div style={{ marginBottom: 24, animation: 'fadeSlideIn 0.5s ease 0.4s both' }}>
+      <div style={{ textAlign: 'center', marginBottom: 12 }}>
+        <span style={{ fontFamily: 'var(--font-devanagari)', fontSize: 16, color: 'var(--ink)' }}>ग्रह दृष्टि</span>
+        <span style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--burnt-sienna)', marginLeft: 8 }}>Planetary Aspects</span>
+      </div>
+
+      <div style={{ textAlign: 'center', marginBottom: 12 }}>
+        <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'var(--ochre)', letterSpacing: 1 }}>
+          {aspects.length} aspect{aspects.length !== 1 ? 's' : ''} · BPHS Ch. 28
+        </span>
+      </div>
+
+      <div style={{ background: 'rgba(245,230,200,0.3)', border: '1px solid rgba(92,64,51,0.15)', overflow: 'auto' }}>
+        {/* Header row */}
+        <div style={{
+          display: 'grid', gridTemplateColumns: '1fr 30px 1fr 80px',
+          padding: '8px 16px', borderBottom: '2px solid rgba(92,64,51,0.2)',
+          fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--burnt-sienna)',
+          letterSpacing: 1, textTransform: 'uppercase',
+        }}>
+          <div>From</div><div></div><div>To</div><div style={{ textAlign: 'right' }}>Type</div>
+        </div>
+
+        {shown.map((a, i) => {
+          const fromInfo = GRAHA_INFO[a.from];
+          const toInfo = GRAHA_INFO[a.to];
+          const isSpecial = a.type === 'special';
+          return (
+            <div key={i} style={{
+              display: 'grid', gridTemplateColumns: '1fr 30px 1fr 80px',
+              padding: '8px 16px', borderBottom: '1px solid rgba(92,64,51,0.08)',
+              alignItems: 'center', background: isSpecial ? 'rgba(184,134,11,0.04)' : 'transparent',
+            }}>
+              <span style={{ fontFamily: 'var(--font-devanagari)', fontSize: 13, color: fromInfo?.color || 'var(--ink)', fontWeight: 700 }}>
+                {fromInfo?.sym || ''} {a.from_sa}
+              </span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--ochre)', textAlign: 'center' }}>→</span>
+              <span style={{ fontFamily: 'var(--font-devanagari)', fontSize: 13, color: toInfo?.color || 'var(--ink)', fontWeight: 700 }}>
+                {toInfo?.sym || ''} {a.to_sa}
+              </span>
+              <span style={{
+                fontFamily: 'var(--font-body)', fontSize: 10, textAlign: 'right',
+                color: isSpecial ? 'var(--ochre)' : 'var(--burnt-sienna)',
+                fontWeight: isSpecial ? 600 : 400,
+              }}>
+                {isSpecial ? `विशेष · ${a.aspect_house}th` : 'पूर्ण · 7th'}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
+      {aspects.length > 6 && (
+        <button onClick={() => setExpanded(!expanded)} style={{
+          display: 'block', margin: '8px auto', fontFamily: 'var(--font-body)', fontSize: 12,
+          color: 'var(--ochre)', background: 'none', border: '1px solid var(--ochre)',
+          padding: '6px 20px', cursor: 'pointer',
+        }}>
+          {expanded ? 'Show fewer aspects' : `Show all ${aspects.length} aspects`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+
 function AskTheSage() {
   return (
     <div style={{
@@ -335,6 +498,14 @@ export default function KundliPage() {
 
           {/* Interpretation */}
           <InterpretationSection interpretation={kundli.interpretation} />
+
+          <Divider />
+
+          {/* Yogas — Classical Combinations */}
+          <YogaSection yogas={kundli.yogas} />
+
+          {/* Drishti — Planetary Aspects */}
+          <DrishtiSection drishti={kundli.drishti} grahas={kundli.grahas} />
 
           <Divider />
 
