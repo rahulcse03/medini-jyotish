@@ -13,6 +13,7 @@ import MonthlyPage from './pages/MonthlyPage';
 import FinancialPage from './pages/FinancialPage';
 import TopicalPage from './pages/TopicalPage';
 import RashifalPage from './pages/RashifalPage';
+import AboutPage from './pages/AboutPage';
 
 const API_BASE = import.meta.env.VITE_API_BASE || '';
 
@@ -21,7 +22,7 @@ export default function App() {
 
   // Derive initial tab from URL path (e.g. /rashifal → 'rashifal')
   const pathTab = window.location.pathname.replace(/^\/+|\/+$/g, '').split('/').pop();
-  const VALID_TABS = ['graha','panchang','medini','eclipse','samvatsara','kundli','nations','monthly','financial','topical','rashifal'];
+  const VALID_TABS = ['graha','panchang','medini','eclipse','samvatsara','kundli','nations','monthly','financial','topical','rashifal','about'];
   const initialTab = VALID_TABS.includes(pathTab) ? pathTab : 'graha';
 
   const [active, setActive] = useState(initialTab);
@@ -105,6 +106,8 @@ export default function App() {
           <TopicalPage />
         ) : active === 'rashifal' ? (
           <RashifalPage />
+        ) : active === 'about' ? (
+          <AboutPage />
         ) : loading ? (
           <LoadingSkeleton />
         ) : (
