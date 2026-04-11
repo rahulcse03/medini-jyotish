@@ -48,3 +48,7 @@ export function getFinancialAnalysis() {
 export function getTopicalAnalysis() {
   return fetchAPI('/api/v1/medini/topical');
 }
+
+export function getRashifal() {
+  return fetchAPI('/api/v1/rashifal/today');
+}

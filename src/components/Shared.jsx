@@ -41,6 +41,7 @@ const NAV_TABS = [
   { key: 'monthly',     sa: 'मासिक सारांश',  tKey: 'nav.monthly' },
   { key: 'financial',   sa: 'आर्थिक ज्योतिष', tKey: 'nav.financial' },
   { key: 'topical',     sa: 'सामयिक विश्लेषण', tKey: 'nav.topical' },
+  { key: 'rashifal',    sa: 'राशिफल',          tKey: 'nav.rashifal' },
 ];
 
 export function Nav({ active, setActive }) {

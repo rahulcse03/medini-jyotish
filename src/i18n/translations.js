@@ -33,6 +33,7 @@ const en = {
   'nav.monthly': 'Monthly',
   'nav.financial': 'Financial',
   'nav.topical': 'Topical',
+  'nav.rashifal': 'Rashifal',
 
   // ── Loading ──
   'loading.positions': 'Calculating planetary positions...',
@@ -261,6 +262,11 @@ const en = {
   'topical.indicators': ' indicators · ',
   'topical.predictions': ' predictions',
 
+  // ── Rashifal page ──
+  'rashifal.title': 'Daily Rashifal — Vedic Horoscope',
+  'rashifal.subtitle': 'Transit-based daily predictions',
+  'rashifal.note': 'Based on classical Gochar Phala from Brihat Parashara Hora Shastra. Predictions use Chandra Rashi (Moon sign) transit analysis.',
+
   // ── Rashi Chakra ──
   'chakra.title': 'Rashi Chakra',
   'chakra.ayanamsha': 'Lahiri Ayanamsha',
@@ -299,6 +305,7 @@ const hi = {
   'nav.monthly': 'मासिक',
   'nav.financial': 'वित्तीय',
   'nav.topical': 'सामयिक',
+  'nav.rashifal': 'राशिफल',
   'loading.positions': 'ग्रह स्थिति की गणना हो रही है...',
   'loading.analysing': 'आकाश का विश्लेषण हो रहा है…',
   'graha.title': 'ग्रह स्थिति',
@@ -531,6 +538,7 @@ const ta = {
   'nav.monthly': 'மாதாந்திர',
   'nav.financial': 'நிதி',
   'nav.topical': 'சமகால',
+  'nav.rashifal': 'ராசிபலன்',
   'loading.positions': 'கிரக நிலைகள் கணக்கிடப்படுகின்றன...',
   'loading.analysing': 'வானத்தை பகுப்பாய்வு செய்கிறது…',
   'graha.title': 'கிரக நிலைகள்',
@@ -580,6 +588,7 @@ const te = {
   'nav.monthly': 'నెలవారీ',
   'nav.financial': 'ఆర్థిక',
   'nav.topical': 'సమకాలిక',
+  'nav.rashifal': 'రాశిఫలం',
   'loading.positions': 'గ్రహ స్థానాలు లెక్కించబడుతున్నాయి...',
   'graha.title': 'గ్రహ స్థానాలు',
   'panchang.title': 'దినచర్య పంచాంగం',
@@ -615,6 +624,7 @@ const kn = {
   'nav.monthly': 'ಮಾಸಿಕ',
   'nav.financial': 'ಆರ್ಥಿಕ',
   'nav.topical': 'ಸಾಮಯಿಕ',
+  'nav.rashifal': 'ರಾಶಿಫಲ',
   'loading.positions': 'ಗ್ರಹ ಸ್ಥಾನಗಳನ್ನು ಲೆಕ್ಕ ಹಾಕಲಾಗುತ್ತಿದೆ...',
   'graha.title': 'ಗ್ರಹ ಸ್ಥಾನಗಳು',
   'panchang.title': 'ದೈನಿಕ ಪಂಚಾಂಗ',
@@ -650,6 +660,7 @@ const bn = {
   'nav.monthly': 'মাসিক',
   'nav.financial': 'আর্থিক',
   'nav.topical': 'সাময়িক',
+  'nav.rashifal': 'রাশিফল',
   'loading.positions': 'গ্রহের অবস্থান গণনা হচ্ছে...',
   'graha.title': 'গ্রহ অবস্থান',
   'panchang.title': 'দৈনিক পঞ্চাঙ্গ',
@@ -685,6 +696,7 @@ const mr = {
   'nav.monthly': 'मासिक',
   'nav.financial': 'आर्थिक',
   'nav.topical': 'सामयिक',
+  'nav.rashifal': 'राशिफल',
   'loading.positions': 'ग्रह स्थिती मोजली जात आहे...',
   'graha.title': 'ग्रह स्थिती',
   'panchang.title': 'दैनिक पंचांग',
@@ -720,6 +732,7 @@ const gu = {
   'nav.monthly': 'માસિક',
   'nav.financial': 'આર્થિક',
   'nav.topical': 'સામયિક',
+  'nav.rashifal': 'રાશિફળ',
   'loading.positions': 'ગ્રહ સ્થિતિ ગણાઈ રહી છે...',
   'graha.title': 'ગ્રહ સ્થિતિ',
   'panchang.title': 'દૈનિક પંચાંગ',
